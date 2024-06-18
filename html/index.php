@@ -39,7 +39,7 @@
                             <h1 class="display-5 fw-bolder text-white mb-2">CPU Temperatuur</h1>
                             <p class="lead fw-normal text-white-50 mb-4">We hebben deze website ontwikkeld als onderdeel van een opdracht voor de cursus Webtechnologie. Op de website vind je meer informatie over het project en een pagina waar live data getoond wordt van de CPU.</p>
                             <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                <a class="btn btn-primary btn-lg px-4 me-sm-3" href="live.html">Live Data</a>
+                                <a class="btn btn-primary btn-lg px-4 me-sm-3" href="about.php">Live Data</a>
                             </div>
                         </div>
                     </div>
