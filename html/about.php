@@ -42,10 +42,10 @@
                         <div id="temperatureChart" style="height: 400px;"></div>
                     </div>
                     <div class="col-lg-4 col-xl-3">
-                        <div class="card mb-5 mb-xl-0">
+                        <div class="card mb-5 mb-xl-0 temperature-card">
                             <div class="card-body p-5">
-                                <h5 class="card-title">Laatste beschikbare temperatuur</h5>
-                                <p class="card-text" id="lastTemperature">...</p>
+                                <h5 class="card-title temperature-title">Laatste beschikbare temperatuur</h5>
+                                <p class="card-text temperature-value" id="lastTemperature">...</p>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
     <footer class="bg-dark py-4 mt-auto">
         <div class="container px-5">
             <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Webtechnologie Project 2024</div></div>                   
+                <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Webtechnologie Project 2024</div></div>
             </div>
         </div>
     </footer>
@@ -74,6 +74,10 @@
                     const times = data.map(item => item.recorded_at);
                     const values = data.map(item => item.value);
 
+                    // Display the first value in 'Laatste beschikbare temperatuur'
+                    const firstTemperature = values[0];
+                    document.getElementById('lastTemperature').textContent = `${firstTemperature} °C`;
+
                     const trace = {
                         x: times,
                         y: values,
@@ -89,10 +93,6 @@
                     };
 
                     Plotly.newPlot('temperatureChart', [trace], layout);
-
-                    // Update last temperature display
-                    const lastTemperature = values[values.length - 1];
-                    document.getElementById('lastTemperature').textContent = `${lastTemperature} °C`;
                 })
                 .catch(error => {
                     console.error('Error fetching temperature data:', error);

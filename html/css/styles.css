@@ -10863,3 +10863,25 @@ h1, h3 {
 iframe {
     border: 0;
 }
+
+
+
+.temperature-card {
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #ced4da; /* Gray border */
+    border-radius: 0.25rem; /* Rounded corners */
+    padding: 1rem; /* Padding inside the card */
+}
+
+.temperature-title {
+    color: #343a40; /* Dark color for the title */
+    font-size: 1.25rem; /* Larger font size */
+    font-weight: bold; /* Bold font weight */
+    margin-bottom: 0.5rem; /* Bottom margin */
+}
+
+.temperature-value {
+    font-size: 2rem; /* Larger font size for temperature value */
+    font-weight: bold; /* Bold font weight */
+    color: #007bff; /* Blue color for the temperature value */
+}
