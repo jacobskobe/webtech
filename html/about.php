@@ -38,7 +38,7 @@
                     <p class="lead fw-normal text-muted mb-0">CPU Temperatuur</p>
                 </div>
                 <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-8 col-xl-6">
+                    <div class="col-lg-8 col-xl-6" style="width: 70%;">
                         <div id="temperatureChart" style="height: 400px;"></div>
                     </div>
                     <div class="col-lg-4 col-xl-3">
@@ -85,7 +85,7 @@
                     const layout = {
                         title: 'CPU Temperatuur (Laatste 2 Minuten)',
                         xaxis: { title: 'Tijd' },
-                        yaxis: { title: 'Temperatuur (°C)' }
+                        yaxis: { title: 'Temperatuur (°C)', range: [50, 70] }
                     };
 
                     Plotly.newPlot('temperatureChart', [trace], layout);
