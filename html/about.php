@@ -1,88 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Data</title>
-    <link rel="stylesheet" href="./css/stylesheet.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Modern Business - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/pxl.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Project Webtechnologie</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="index.php">Home</a>
-                    <a class="nav-link active" aria-current="page" href="about.php">About</a>
+<body class="d-flex flex-column">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container px-5">
+                <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="about.php">Live Data</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <h1>Temperature Monitoring</h1>
-        <div class="row">
-            <div class="col-md-8">
-                <div id="temperatureChart" style="width:100%;height:500px;"></div>
+        </nav>
+        <!-- Temperature section -->
+        <section class="bg-light py-5">
+            <div class="container px-5 my-5">
+                <div class="text-center mb-5">
+                    <h1 class="fw-bolder">Live Data</h1>
+                    <p class="lead fw-normal text-muted mb-0">CPU Temperatuur</p>
+                </div>
+                <div class="row gx-5 justify-content-center">
+                    <div class="col-lg-8 col-xl-6">
+                        <div id="temperatureChart" style="height: 400px;"></div>
+                    </div>
+                    <div class="col-lg-4 col-xl-3">
+                        <div class="card mb-5 mb-xl-0">
+                            <div class="card-body p-5">
+                                <h5 class="card-title">Laatste beschikbare temperatuur</h5>
+                                <p class="card-text" id="lastTemperature">...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <h3>Latest Temperature</h3>
-                <p id="latestTemperature" class="display-4"></p>
-                <p id="latestTimestamp"></p>
+        </section>
+    </main>
+    <!-- Footer-->
+    <footer class="bg-dark py-4 mt-auto">
+        <div class="container px-5">
+            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Webtechnologie Project 2024</div></div>                   
             </div>
         </div>
-    </div>
-
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <!-- Custom script for fetching and plotting data -->
     <script>
         function fetchTemperatureData() {
             fetch('/api.php')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.length > 0) {
-                        const times = data.map(entry => entry.recorded_at); // Assuming recorded_at is already in a date format
-                        const temperatures = data.map(entry => entry.value);
+                    const times = data.map(item => item.recorded_at);
+                    const values = data.map(item => item.value);
 
-                        const trace = {
-                            x: times,
-                            y: temperatures,
-                            mode: 'lines+markers',
-                            type: 'scatter',
-                            name: 'Temperature'
-                        };
+                    const trace = {
+                        x: times,
+                        y: values,
+                        mode: 'lines+markers',
+                        type: 'scatter',
+                        name: 'Temperature'
+                    };
 
-                        const layout = {
-                            title: 'Temperature Data (Last 2 Minutes)',
-                            xaxis: {
-                                title: 'Time',
-                                tickmode: 'auto', // 'auto' chooses the best tick spacing automatically
-                                tickformat: '%Y-%m-%d %H:%M:%S.%L', // Custom tick format with milliseconds
-                                tickangle: -45, // Angle of rotation for tick labels
-                                automargin: true // Automatically adjusts margins
-                            },
-                            yaxis: { title: 'Temperature (°C)' }
-                        };
+                    const layout = {
+                        title: 'CPU Temperatuur (Laatste 2 Minuten)',
+                        xaxis: { title: 'Tijd' },
+                        yaxis: { title: 'Temperatuur (°C)' }
+                    };
 
-                        Plotly.newPlot('temperatureChart', [trace], layout);
+                    Plotly.newPlot('temperatureChart', [trace], layout);
 
-                        // Update latest temperature display
-                        const latestData = data[0];
-                        const latestTemperature = latestData.value;
-                        const latestTimestamp = latestData.recorded_at;
-
-                        document.getElementById('latestTemperature').innerText = `${latestTemperature} °C`;
-                        document.getElementById('latestTimestamp').innerText = `Last update: ${latestTimestamp}`;
-                    } else {
-                        document.getElementById('latestTemperature').innerText = 'No data available';
-                        Plotly.purge('temperatureChart'); // Clear graph if no data
-                    }
+                    // Update last temperature display
+                    const lastTemperature = values[values.length - 1];
+                    document.getElementById('lastTemperature').textContent = `${lastTemperature} °C`;
                 })
                 .catch(error => {
                     console.error('Error fetching temperature data:', error);
@@ -92,54 +102,5 @@
         setInterval(fetchTemperatureData, 2500); // Update every 2.5 seconds
         fetchTemperatureData(); // Initial fetch
     </script>
-
-    <!-- Footer -->
-    <footer class="text-center text-white" style="background-color: #e92517;">
-        <div class="container">
-            <section class="mt-5">
-                <div class="row text-center d-flex justify-content-center pt-5">
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="#!" class="text-white">About us</a>
-                        </h6>
-                    </div>
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="#!" class="text-white">Products</a>
-                        </h6>
-                    </div>
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="#!" class="text-white">Awards</a>
-                        </h6>
-                    </div>
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="#!" class="text-white">Help</a>
-                        </h6>
-                    </div>
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="#!" class="text-white">Contact</a>
-                        </h6>
-                    </div>
-                </div>
-            </section>
-            <hr class="my-5" />
-            <section class="mb-5">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <p>Project Webtechnologie</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            © 2024 Copyright:
-            <a class="text-white" href="https://www.pxl.be/">PXL</a>
-        </div>
-    </footer>
-    <!-- Footer end -->
 </body>
-
 </html>
